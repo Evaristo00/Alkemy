@@ -71,12 +71,18 @@ public class Main {
         scanner.close();
     }
 
+    public static <T> void printList(List<T> list) {
+        for (T item : list) {
+            System.out.println(item.toString());
+        }
+    }
+
     private static Boolean ejecutarOpcion(int opcion, List<Alumno> alumnos,List<Curso> cursos,Boolean salir, Scanner scanner) {
         switch (opcion) {
             case 1:
                 System.out.println("Mostrar listado de alumnos:");
                 List<Alumno> listaAlumnos = obtenerCurso(scanner,cursos).listadoAlumnosDescreciente();
-                System.out.println(listaAlumnos);
+                printList(listaAlumnos);
 
                 break;
             case 2:
@@ -87,12 +93,12 @@ public class Main {
             case 3:
                 System.out.println("Informar alumnos que adeudan materias de la secundaria:");
                 List<Alumno> listAdeudanMaterias = obtenerCurso(scanner,cursos).alumnosAdeudanMaterias();
-                System.out.println(listAdeudanMaterias);
+                printList(listAdeudanMaterias);
                 break;
             case 4:
                 System.out.println("Encontrar alumno con la nota más alta en el curso de ingreso:");
                 List<Alumno> alumnosMaxCalificaion = cursos.get(0).calificacionMasAlta();
-                System.out.println(alumnosMaxCalificaion);
+                printList(alumnosMaxCalificaion);
                 break;
             case 5:
                 System.out.println("Informar si algún alumno no abonó la matrícula del curso:");
