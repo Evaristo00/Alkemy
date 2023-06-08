@@ -7,11 +7,6 @@ import java.util.Scanner;
 import java.util.stream.IntStream;
 
 public class Main {
-
-    /*TODO
-    * Crear un Singelton AlumnoRegistry para que no haya alumnos con el mismo nombre y apellido
-    * */
-
     public static void main(String[] args) {
 
         List<Curso> cursos = new ArrayList<>();
@@ -48,7 +43,7 @@ public class Main {
         }
 
         try {
-            cursoIngreso.setCalificacion(alumno1, 8);
+            cursoIngreso.setCalificacion(alumno1, 9);
             cursoIngreso.setCalificacion(alumno2, 9);
             cursoIngreso.setCalificacion(alumno3, 7);
             cursoIngreso.setCalificacion(alumno4, 8);
@@ -96,8 +91,8 @@ public class Main {
                 break;
             case 4:
                 System.out.println("Encontrar alumno con la nota más alta en el curso de ingreso:");
-                Alumno alumnoMaxCalificaion = cursos.get(0).calificacionMasAlta();
-                System.out.println(alumnoMaxCalificaion);
+                List<Alumno> alumnosMaxCalificaion = cursos.get(0).calificacionMasAlta();
+                System.out.println(alumnosMaxCalificaion);
                 break;
             case 5:
                 System.out.println("Informar si algún alumno no abonó la matrícula del curso:");

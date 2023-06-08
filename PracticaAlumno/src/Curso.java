@@ -41,12 +41,13 @@ public class Curso {
         return alumnos.keySet().stream().anyMatch(alumno -> !alumno.getPagoMatricula());
     }
 
-    public Alumno calificacionMasAlta(){
-        return alumnos.entrySet()
-                                        .stream()
-                                        .max(Comparator.comparing(Map.Entry::getValue))
-                                        .map(Map.Entry::getKey)
-                                        .orElse(null);
+    public List<Alumno> calificacionMasAlta(){
+        Optional<Integer> maxCalificacion = alumnos.values().stream().max(Integer::compareTo);
+        return maxCalificacion.map(max -> alumnos.entrySet().stream()
+                        .filter(entry -> entry.getValue().equals(max))
+                        .map(Map.Entry::getKey)
+                        .collect(Collectors.toList()))
+                .orElse(Collections.emptyList());
     }
 
     public void agregarAlumno(Alumno alumno) throws ExceptionAlumnoYaAgregado {
