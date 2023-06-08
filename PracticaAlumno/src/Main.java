@@ -102,11 +102,12 @@ public class Main {
                 break;
             case 5:
                 System.out.println("Informar si algún alumno no abonó la matrícula del curso:");
-                Boolean faltaAbonar = obtenerCurso(scanner,cursos).faltaAbonarMatricula();
-                if (faltaAbonar) {
-                    System.out.println("No todos abonaron la matricula");
-                } else {
+                List<Alumno> faltaAbonar = obtenerCurso(scanner,cursos).faltaAbonarMatricula();
+                if (faltaAbonar.isEmpty()) {
                     System.out.println("Todos abonaron la matricula");
+                } else {
+                    System.out.println("Los alumnos que faltan abonar son:");
+                    printList(faltaAbonar);
                 }
                 break;
             case 6:

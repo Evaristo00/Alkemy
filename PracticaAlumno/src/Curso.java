@@ -37,8 +37,12 @@ public class Curso {
         return alumnos.keySet().stream().filter(Alumno::getAdeudaMaterias).collect(Collectors.toList());
     }
 
-    public Boolean faltaAbonarMatricula(){
-        return alumnos.keySet().stream().anyMatch(alumno -> !alumno.getPagoMatricula());
+    public List<Alumno> faltaAbonarMatricula(){
+        return alumnos.entrySet()
+                .stream()
+                .filter(entry -> entry.getKey().getPagoMatricula())
+                .map(Map.Entry::getKey)
+                .collect(Collectors.toList());
     }
 
     public List<Alumno> calificacionMasAlta(){
