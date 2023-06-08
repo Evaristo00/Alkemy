@@ -137,6 +137,12 @@ public class Main {
                 Alumno alumnoModificar = obtenerAlumno(scanner,alumnos);
                 seleccionarModificaciones(alumnoModificar,scanner);
                 break;
+            case 9:
+                System.out.println("Agregar Alumno nuevo");
+                Alumno alumnoNuevo = new Alumno();
+                seleccionarModificaciones(alumnoNuevo,scanner);
+                alumnos.add(alumnoNuevo);
+                break;
             case 0:
                 salir = true;
                 System.out.println("¡Hasta luego!");
@@ -174,27 +180,22 @@ public class Main {
                 System.out.println("Error: La edad debe ser un número entero.");
             }
         }
-        if(alumno.getAdeudaMaterias())
-            System.out.println("actualmente el alumno no adeuda materias");
-        else
-            System.out.println("actualmente el alumno no adeuda materias");
-        System.out.print("¿Adeuda materias? (Sí/No): ");
+
+        System.out.println("¿Adeuda materias? (Sí/No): ");
         aux = scanner.nextLine();
         if (!aux.isEmpty()) {
             boolean adeudaMaterias = aux.equalsIgnoreCase("Sí") || aux.equalsIgnoreCase("Si");
             alumno.setAdeudaMaterias(adeudaMaterias);
         }
-        if(alumno.getPagoMatricula())
-            System.out.println("actualmente el alumno tiene paga la matricula");
-        else
-            System.out.println("actualmente el alumno no tiene paga la matricula");
-        System.out.print("¿Pagó la matrícula? (Sí/No): ");
+
+        System.out.println("¿Pagó la matrícula? (Sí/No): ");
         aux = scanner.nextLine();
         if (!aux.isEmpty()) {
             boolean pagoMatricula = aux.equalsIgnoreCase("Sí") || aux.equalsIgnoreCase("Si");
             alumno.setPagoMatricula(pagoMatricula);
         }
     }
+
 
 
     public static void menu (){
@@ -207,6 +208,7 @@ public class Main {
         System.out.println("\t6. Agregar un nuevo alumno al curso");
         System.out.println("\t7. Dar de baja a un alumno");
         System.out.println("\t8. Modificar los datos de un alumno");
+        System.out.println("\t9. Agregar Nuevo Alumno");
         System.out.println("\t0. Salir");
         System.out.print("Ingrese una opción: ");
     }

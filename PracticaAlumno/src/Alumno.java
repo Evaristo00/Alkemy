@@ -17,6 +17,10 @@ public class Alumno {
         this.pagoMatricula = pagoMatricula;
     }
 
+    public Alumno() {
+
+    }
+
     @Override
     public String toString() {
         return this.nombre + ", " + this.apellido + "\t - " + this.edad + "años.";
