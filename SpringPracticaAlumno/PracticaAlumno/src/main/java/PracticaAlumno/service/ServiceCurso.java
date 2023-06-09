@@ -8,15 +8,12 @@ import PracticaAlumno.exceptions.ExceptionAlumnoNoMatriculado;
 import PracticaAlumno.exceptions.ExceptionAlumnoYaAgregado;
 import PracticaAlumno.exceptions.ExceptionCursoNoEncontrado;
 import jakarta.annotation.PostConstruct;
-import jakarta.persistence.criteria.CriteriaBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 public class ServiceCurso {
@@ -92,20 +89,23 @@ public class ServiceCurso {
         return curso.orElseThrow(() -> new ExceptionCursoNoEncontrado());
     }
 
-    public void agregarCurso(CursoDTO cursoDTO) {
+    public Curso agregarCurso(CursoDTO cursoDTO) {
 
         Curso curso = new Curso(id++,cursoDTO.getNombreCurso());
         cursos.add(curso);
+        return curso;
     }
 
-    public void modificarCurso(Integer id, CursoDTO cursoDTO) throws ExceptionCursoNoEncontrado {
+    public Curso modificarCurso(Integer id, CursoDTO cursoDTO) throws ExceptionCursoNoEncontrado {
         Curso cursoExistente = obtenerCursoPorId(id);
         cursoExistente.setNombreCurso(cursoDTO.getNombreCurso());
+        return cursoExistente;
     }
 
-    public void eliminarCursoPorId(Integer id) throws ExceptionCursoNoEncontrado {
+    public Curso eliminarCursoPorId(Integer id) throws ExceptionCursoNoEncontrado {
         Curso cursoExistente = obtenerCursoPorId(id);
         cursos.remove(cursoExistente);
+        return cursoExistente;
     }
 
     // Otros métodos para cada método definido en la clase Curso
@@ -134,9 +134,10 @@ public class ServiceCurso {
         return cursoExistente.calificacionMasAlta();
     }
 
-    public void agregarAlumno(Integer idCurso,Alumno alumno) throws ExceptionCursoNoEncontrado, ExceptionAlumnoYaAgregado {
+    public Alumno agregarAlumno(Integer idCurso, Alumno alumno) throws ExceptionCursoNoEncontrado, ExceptionAlumnoYaAgregado {
         Curso cursoExistente = obtenerCursoPorId(idCurso);
         cursoExistente.agregarAlumno(alumno);
+        return alumno;
     }
 
     public void eliminarAlumno(Integer idCurso,Integer dni) throws ExceptionCursoNoEncontrado, ExceptionAlumnoNoMatriculado {
