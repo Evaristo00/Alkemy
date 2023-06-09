@@ -61,7 +61,8 @@ A continuación se detallan los endpoints disponibles en la API.
 
 **Nota:** Los parámetros entre llaves `{}` indican que se deben reemplazar con un valor válido al hacer la petición.
 
-### Otros
+### Swagger
 
-- `GET /endpoints`: Obtiene la lista de endpoints disponibles en la API.
+- `GET /docs/swagger-ui.html`: Accede a Swagger UI para explorar la documentación interactiva de la API.
 
+**Nota:** Los parámetros entre llaves `{}` indican que se deben reemplazar con un valor válido al hacer la petición.
