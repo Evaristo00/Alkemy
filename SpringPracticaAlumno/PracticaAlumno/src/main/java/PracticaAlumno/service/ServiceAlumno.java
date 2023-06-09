@@ -43,21 +43,24 @@ public class ServiceAlumno {
         return alumno.orElseThrow(() -> new ExceptionAlumnoNoEncontrado());
     }
 
-    public void agregarAlumno(Alumno alumno) throws ExceptionAlumnoYaCreado {
+    public Alumno agregarAlumno(Alumno alumno) throws ExceptionAlumnoYaCreado {
         Boolean existeAlumno = alumnos.stream()
                 .anyMatch(a -> a.getDni().equals(alumno.getDni()));
         if (existeAlumno) throw new ExceptionAlumnoYaCreado();
         alumnos.add(alumno);
+        return alumno;
     }
 
-    public void actualizarAlumno(Alumno alumnoActualizado) throws ExceptionAlumnoNoEncontrado {
+    public Alumno actualizarAlumno(Alumno alumnoActualizado) throws ExceptionAlumnoNoEncontrado {
         Alumno alumnoExistente = obtenerAlumnoPorDni(alumnoActualizado.getDni());
         int index = alumnos.indexOf(alumnoExistente);
         alumnos.set(index, alumnoActualizado);
+        return alumnoActualizado;
     }
 
-    public void eliminarAlumnoPorDni(Integer dni) throws ExceptionAlumnoNoEncontrado {
+    public Alumno eliminarAlumnoPorDni(Integer dni) throws ExceptionAlumnoNoEncontrado {
         Alumno alumnoExistente = obtenerAlumnoPorDni(dni);
         alumnos.remove(alumnoExistente);
+        return alumnoExistente;
     }
 }

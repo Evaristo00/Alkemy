@@ -5,6 +5,7 @@ import PracticaAlumno.exceptions.ExceptionAlumnoNoEncontrado;
 import PracticaAlumno.exceptions.ExceptionAlumnoYaCreado;
 import PracticaAlumno.service.ServiceAlumno;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -22,22 +23,39 @@ public class controllerAlumno {
     }
 
     @GetMapping("/{dni}")
-    public Alumno obtenerAlumnoPorDni(@PathVariable Integer dni) throws ExceptionAlumnoNoEncontrado {
-        return serviceAlumno.obtenerAlumnoPorDni(dni);
+    public ResponseEntity<?> obtenerAlumnoPorDni(@PathVariable Integer dni) {
+        try {
+            Alumno alumno = serviceAlumno.obtenerAlumnoPorDni(dni);
+            return ResponseEntity.ok(alumno);
+        } catch (ExceptionAlumnoNoEncontrado e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
     }
 
     @PostMapping
-    public void agregarAlumno(@RequestBody Alumno alumno) throws ExceptionAlumnoYaCreado {
-        serviceAlumno.agregarAlumno(alumno);
+    public ResponseEntity<?> agregarAlumno(@RequestBody Alumno alumno) {
+        try {
+            return ResponseEntity.ok(serviceAlumno.agregarAlumno(alumno));
+        } catch (ExceptionAlumnoYaCreado e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
     }
 
     @PutMapping()
-    public void actualizarAlumno(@RequestBody Alumno alumno) throws ExceptionAlumnoNoEncontrado {
-        serviceAlumno.actualizarAlumno(alumno);
+    public ResponseEntity<?> actualizarAlumno(@RequestBody Alumno alumno) {
+        try {
+            return ResponseEntity.ok(serviceAlumno.actualizarAlumno(alumno));
+        } catch (ExceptionAlumnoNoEncontrado e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
     }
 
     @DeleteMapping("/{dni}")
-    public void eliminarAlumnoPorDni(@PathVariable Integer dni) throws ExceptionAlumnoNoEncontrado {
-        serviceAlumno.eliminarAlumnoPorDni(dni);
+    public ResponseEntity<?> eliminarAlumnoPorDni(@PathVariable Integer dni) {
+        try {
+            return ResponseEntity.ok(serviceAlumno.eliminarAlumnoPorDni(dni));
+        } catch (ExceptionAlumnoNoEncontrado e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
     }
 }
