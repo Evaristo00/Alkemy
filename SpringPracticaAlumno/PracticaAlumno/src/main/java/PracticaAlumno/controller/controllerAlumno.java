@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.net.URI;
 import java.util.List;
 
 @RestController
@@ -35,7 +36,8 @@ public class controllerAlumno {
     @PostMapping
     public ResponseEntity<?> agregarAlumno(@RequestBody Alumno alumno) {
         try {
-            return ResponseEntity.ok(serviceAlumno.agregarAlumno(alumno));
+            Alumno alumnoAgrgado = serviceAlumno.agregarAlumno(alumno);
+            return ResponseEntity.created(URI.create("/alumno/" + alumnoAgrgado.getDni())).body(alumnoAgrgado);
         } catch (ExceptionAlumnoYaCreado e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }

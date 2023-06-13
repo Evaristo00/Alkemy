@@ -13,6 +13,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.net.URI;
 import java.util.List;
 @RestController
 @RequestMapping("/curso")
@@ -38,26 +40,27 @@ public class contollerCurso {
 
     @PostMapping
     public ResponseEntity<Curso> agregarCurso(@RequestBody CursoDTO cursoDTO) {
-        return ResponseEntity.ok(serviceCurso.agregarCurso(cursoDTO));
+        Curso cursoAgregado = serviceCurso.agregarCurso(cursoDTO);
+        return ResponseEntity.created(URI.create("/curso/" + cursoAgregado.getId())).body(cursoAgregado);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Curso> modificarCurso(@PathVariable Integer id, @RequestBody CursoDTO cursoDTO) {
+    public ResponseEntity<?> modificarCurso(@PathVariable Integer id, @RequestBody CursoDTO cursoDTO) {
         try {
             Curso curso = serviceCurso.modificarCurso(id, cursoDTO);
             return ResponseEntity.ok(curso);
         } catch (ExceptionCursoNoEncontrado e) {
-            return ResponseEntity.badRequest().body(null);
+            return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Curso> eliminarCursoPorId(@PathVariable Integer id) {
+    public ResponseEntity<?> eliminarCursoPorId(@PathVariable Integer id) {
         try {
             Curso curso = serviceCurso.eliminarCursoPorId(id);
             return ResponseEntity.ok(curso);
         } catch (ExceptionCursoNoEncontrado e) {
-            return ResponseEntity.badRequest().body(null);
+            return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
 
@@ -117,7 +120,7 @@ public class contollerCurso {
     public ResponseEntity<?> agregarAlumno(@PathVariable Integer idCurso, @RequestBody AlumnoDTO alumnoDTO) {
         try {
             Alumno alumnoAgregado = serviceCurso.agregarAlumno(idCurso, alumnoDTO.getDni());
-            return ResponseEntity.ok(alumnoAgregado);
+            return ResponseEntity.created(null).body(alumnoAgregado);
         } catch (ExceptionCursoNoEncontrado | ExceptionAlumnoYaAgregado | ExceptionAlumnoNoEncontrado e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
