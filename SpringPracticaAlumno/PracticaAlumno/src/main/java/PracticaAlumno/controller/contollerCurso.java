@@ -1,13 +1,16 @@
 package PracticaAlumno.controller;
 
+import PracticaAlumno.dto.AlumnoDTO;
 import PracticaAlumno.dto.CursoDTO;
 import PracticaAlumno.entity.Alumno;
 import PracticaAlumno.entity.Curso;
+import PracticaAlumno.exceptions.ExceptionAlumnoNoEncontrado;
 import PracticaAlumno.exceptions.ExceptionAlumnoNoMatriculado;
 import PracticaAlumno.exceptions.ExceptionAlumnoYaAgregado;
 import PracticaAlumno.exceptions.ExceptionCursoNoEncontrado;
 import PracticaAlumno.service.ServiceCurso;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
@@ -18,9 +21,9 @@ public class contollerCurso {
     private ServiceCurso serviceCurso;
 
     @GetMapping
-    public List<Curso> obtenerTodosLosCursos() {
-
-        return serviceCurso.obtenerTodosLosCursos();
+    public ResponseEntity<?> obtenerTodosLosCursos() {
+        List<Curso> cursoList = serviceCurso.obtenerTodosLosCursos();
+        return ResponseEntity.ok(cursoList);
     }
 
     @GetMapping("/{id}")
@@ -66,7 +69,7 @@ public class contollerCurso {
             List<Alumno> alumnos = serviceCurso.listadoAlumnosDescreciente(id);
             return ResponseEntity.ok(alumnos);
         } catch (ExceptionCursoNoEncontrado e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
+            return ResponseEntity.notFound().build();
         }
     }
 
@@ -111,12 +114,12 @@ public class contollerCurso {
     }
 
     @PostMapping("/{idCurso}/agregar-alumno")
-    public ResponseEntity<Alumno> agregarAlumno(@PathVariable Integer idCurso, @RequestBody Alumno alumno) {
+    public ResponseEntity<?> agregarAlumno(@PathVariable Integer idCurso, @RequestBody AlumnoDTO alumnoDTO) {
         try {
-            Alumno alumnoAgregado = serviceCurso.agregarAlumno(idCurso, alumno);
+            Alumno alumnoAgregado = serviceCurso.agregarAlumno(idCurso, alumnoDTO.getDni());
             return ResponseEntity.ok(alumnoAgregado);
-        } catch (ExceptionCursoNoEncontrado | ExceptionAlumnoYaAgregado e) {
-            return ResponseEntity.badRequest().body(null);
+        } catch (ExceptionCursoNoEncontrado | ExceptionAlumnoYaAgregado | ExceptionAlumnoNoEncontrado e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
 
