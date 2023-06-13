@@ -4,6 +4,7 @@ package PracticaAlumno.entity;
 
 import PracticaAlumno.exceptions.ExceptionAlumnoNoMatriculado;
 import PracticaAlumno.exceptions.ExceptionAlumnoYaAgregado;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -24,28 +25,14 @@ public class Curso {
     private String nombreCurso;
 
 
-//    @OneToMany(mappedBy = "curso")
-//    private Set<InfoAlumnoCurso> informacionAlumnos;
-
     @ManyToMany
     @JoinTable(
             name = "alumno_curso",
             joinColumns = @JoinColumn(name = "curso_id"),
             inverseJoinColumns = @JoinColumn(name = "alumno_dni")
     )
+    @JsonIgnore
     private List<Alumno> listAlumnos;
-
-//
-//    public Curso(String nombreCurso, HashMap<Alumno,Integer> alumnos) {
-//        this.nombreCurso = nombreCurso;
-//        this.alumnos = alumnos;
-//    }
-//
-//    public Curso(Integer id,String nombreCurso) {
-//        this.id = id;
-//        this.nombreCurso = nombreCurso;
-//        this.alumnos = new HashMap<>();
-//    }
 
     public Curso(String nombreCurso) {
         this.nombreCurso = nombreCurso;
