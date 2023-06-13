@@ -81,10 +81,10 @@ public class Curso {
     }
 
     public void eliminarAlumno(Integer dni) throws ExceptionAlumnoNoMatriculado {
-//        boolean alumnoExistente = alumnos.keySet().removeIf(a -> a.getDni().equals(dni));
-//        if (!alumnoExistente) {
-//            throw new ExceptionAlumnoNoMatriculado();
-//        }
+        boolean alumnoExistente = listAlumnos.removeIf(a -> a.getDni().equals(dni));
+        if (!alumnoExistente) {
+            throw new ExceptionAlumnoNoMatriculado();
+        }
     }
 
 

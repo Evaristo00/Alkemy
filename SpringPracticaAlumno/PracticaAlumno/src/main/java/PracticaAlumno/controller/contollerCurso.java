@@ -103,15 +103,15 @@ public class contollerCurso {
         }
     }
 
-    @GetMapping("/{id}/calificacion-mas-alta")
-    public ResponseEntity<?> obtenerAlumnosCalificacionMasAlta(@PathVariable Integer id) {
-        try {
-            List<Alumno> alumnos = serviceCurso.calificacionMasAlta(id);
-            return ResponseEntity.ok(alumnos);
-        } catch (ExceptionCursoNoEncontrado e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
-        }
-    }
+//    @GetMapping("/{id}/calificacion-mas-alta")
+//    public ResponseEntity<?> obtenerAlumnosCalificacionMasAlta(@PathVariable Integer id) {
+//        try {
+//            List<Alumno> alumnos = serviceCurso.calificacionMasAlta(id);
+//            return ResponseEntity.ok(alumnos);
+//        } catch (ExceptionCursoNoEncontrado e) {
+//            return ResponseEntity.badRequest().body(e.getMessage());
+//        }
+//    }
 
     @PostMapping("/{idCurso}/agregar-alumno")
     public ResponseEntity<?> agregarAlumno(@PathVariable Integer idCurso, @RequestBody AlumnoDTO alumnoDTO) {

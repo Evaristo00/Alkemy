@@ -63,7 +63,6 @@ public class ServiceCurso {
         Curso cursoExistente = obtenerCursoPorId(idCurso);
         Alumno alumnoExistente = serviceAlumno.obtenerAlumnoPorDni(dni);
         cursoExistente.agregarAlumno(alumnoExistente);
-        cursoExistente.setNombreCurso("esto se guarda");
         cursoRepository.save(cursoExistente);
         return alumnoExistente;
     }
@@ -97,5 +96,6 @@ public class ServiceCurso {
     public void eliminarAlumno(Integer idCurso,Integer dni) throws ExceptionCursoNoEncontrado, ExceptionAlumnoNoMatriculado {
         Curso cursoExistente = obtenerCursoPorId(idCurso);
         cursoExistente.eliminarAlumno(dni);
+        cursoRepository.save(cursoExistente);
     }
 }
