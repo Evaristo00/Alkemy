@@ -95,3 +95,38 @@ Ten en cuenta que es posible que necesites tener Docker instalado en tu máquina
 
 Al seguir estos pasos, el contenedor Docker con la base de datos estará en funcionamiento y podrás utilizarlo con la API de Alumnos y Cursos.
 
+Si deseas utilizar XAMPP en lugar de Docker para la base de datos, debes realizar los siguientes pasos:
+
+1. Abre el archivo `application.properties` ubicado en la raíz del proyecto de la API.
+2. Comenta las configuraciones relacionadas con Docker, para ello, añade un símbolo de numeral (#) al inicio de cada línea correspondiente a Docker. Deberás comentar las siguientes líneas:
+
+   ```
+   # Descomentar para utilizar docker
+   # spring.jpa.hibernate.ddl-auto=update
+   # spring.datasource.url=jdbc:mysql://localhost:3306/ALKEMYDB
+   # spring.datasource.username=root
+   # spring.datasource.password=password
+
+   # jpa.hibernate.ddl-auto= update
+   # properties.hibernate.dialect= org.hibernate.dialect.MySQLDialect
+   # spring.datasource.driver-class-name=com.mysql.cj.jdbc.Driver
+   ```
+
+3. Descomenta las configuraciones relacionadas con XAMPP, eliminando el símbolo de numeral (#) al inicio de cada línea correspondiente a XAMPP. Deberás descomentar las siguientes líneas:
+
+   ```
+   # Configuaracion para utilizar XAMPP
+   spring.datasource.url=jdbc:mysql://localhost:3306/alkemydb
+   spring.datasource.username=root
+   spring.datasource.password=
+   spring.datasource.driver-class-name=com.mysql.jdbc.Driver
+
+   # Configuración de Hibernate
+   spring.jpa.database-platform=org.hibernate.dialect.MySQL5Dialect
+   spring.jpa.show-sql=true
+   spring.jpa.hibernate.ddl-auto=update
+   ```
+
+Al realizar estos cambios en el archivo `application.properties`, estarás configurando la API para utilizar XAMPP en lugar del contenedor Docker. Asegúrate de tener XAMPP instalado y en funcionamiento en tu máquina antes de ejecutar la API.
+
+Recuerda que si optas por utilizar XAMPP, deberás tener la base de datos MySQL configurada y en ejecución a través de XAMPP para que la API pueda establecer conexión correctamente.
