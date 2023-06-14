@@ -22,6 +22,7 @@ Atributos:
 - `edad` (Integer): Edad del alumno.
 - `adeudaMaterias` (Boolean): Indica si el alumno adeuda materias.
 - `pagoMatricula` (Boolean): Indica si el alumno ha pagado la matrícula.
+- `cursos` (List<Curso>): Lista de cursos en los que está inscrito el alumno.
 
 ### Curso
 
@@ -30,7 +31,7 @@ Clase que representa un curso.
 Atributos:
 - `id` (Integer): Identificador del curso.
 - `nombreCurso` (String): Nombre del curso.
-- `alumnos` (Map<Alumno, Integer>): Mapa que asocia cada alumno con una calificación.
+- `listAlumnos` (List<Alumno>): Lista de alumnos inscritos en el curso.
 
 ## Endpoints
 
@@ -55,7 +56,6 @@ A continuación se detallan los endpoints disponibles en la API.
 - `GET /curso/{id}/promedio-edad`: Calcula el promedio de edad de los alumnos de un curso.
 - `GET /curso/{id}/alumnos-adeudan-materias`: Obtiene la lista de alumnos de un curso que adeudan materias.
 - `GET /curso/{id}/falta-abonar-matricula`: Obtiene la lista de alumnos de un curso que no han abonado la matrícula.
-- `GET /curso/{id}/calificacion-mas-alta`: Obtiene la lista de alumnos de un curso con la calificación más alta.
 - `POST /curso/{idCurso}/agregar-alumno`: Agrega un alumno a un curso.
 - `DELETE /curso/{idCurso}/{dni}`: Elimina un alumno de un curso por su DNI.
 
@@ -66,3 +66,32 @@ A continuación se detallan los endpoints disponibles en la API.
 - `GET /docs/swagger-ui.html`: Accede a Swagger UI para explorar la documentación interactiva de la API.
 
 **Nota:** Los parámetros entre llaves `{}` indican que se deben reemplazar con un valor válido al hacer la petición.
+
+
+## Base de datos
+
+La API utiliza una base de datos MySQL para almacenar los datos de alumnos y cursos. La conexión a la base de datos se realiza utilizando Hibernate y JPA.
+
+Para utilizar el contenedor Docker en la base de datos de la API, se proporciona un archivo `docker-compose.yml` en la carpeta `Docker`. Este archivo define los servicios necesarios para ejecutar la base de datos MySQL dentro de un contenedor.
+
+El uso de Docker permite crear un entorno aislado y portátil que contiene todos los componentes necesarios para ejecutar la base de datos sin afectar el entorno local de tu máquina.
+
+A continuación, se explica cómo utilizar el contenedor Docker para ejecutar la base de datos:
+
+1. Abre una terminal o línea de comandos.
+2. Navega hasta la carpeta `Docker` del proyecto de la API. Puedes usar el comando `cd` seguido de la ruta de la carpeta.
+3. Una vez dentro de la carpeta `Docker`, ejecuta el siguiente comando:
+
+   ```
+   docker-compose up
+   ```
+
+   Este comando leerá el archivo `docker-compose.yml` y construirá el contenedor de la base de datos MySQL junto con cualquier configuración adicional especificada en el archivo.
+
+4. Docker descargará la imagen de MySQL si no está presente en tu máquina y luego iniciará el contenedor de la base de datos.
+5. Una vez que el contenedor esté en funcionamiento, podrás conectarte a la base de datos MySQL utilizando la configuración proporcionada en la API.
+
+Ten en cuenta que es posible que necesites tener Docker instalado en tu máquina antes de poder ejecutar el comando `docker-compose`. Además, asegúrate de tener los permisos necesarios para ejecutar Docker.
+
+Al seguir estos pasos, el contenedor Docker con la base de datos estará en funcionamiento y podrás utilizarlo con la API de Alumnos y Cursos.
+
