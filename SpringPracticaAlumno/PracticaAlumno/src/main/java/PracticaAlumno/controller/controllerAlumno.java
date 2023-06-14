@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/alumno")
@@ -19,8 +20,8 @@ public class controllerAlumno {
     private  ServiceAlumno serviceAlumno;
 
     @GetMapping
-    public List<Alumno> obtenerTodosLosAlumnos() {
-        return serviceAlumno.obtenerTodosLosAlumnos();
+    public ResponseEntity<?> obtenerTodosLosAlumnos() {
+        return ResponseEntity.ok(serviceAlumno.obtenerTodosLosAlumnos());
     }
 
     @GetMapping("/{dni}")
@@ -58,6 +59,15 @@ public class controllerAlumno {
             return ResponseEntity.ok(serviceAlumno.eliminarAlumnoPorDni(dni));
         } catch (ExceptionAlumnoNoEncontrado e) {
             return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    @GetMapping("/busqueda")
+    public ResponseEntity<?> obtenerAlumno(@RequestParam(required = false) Optional<Integer> dni){
+        if (dni.isPresent()){
+            return obtenerAlumnoPorDni(dni.get());
+        }else{
+            return obtenerTodosLosAlumnos();
         }
     }
 }

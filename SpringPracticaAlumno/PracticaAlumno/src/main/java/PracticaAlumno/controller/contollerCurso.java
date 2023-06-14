@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.*;
 import java.net.URI;
 import java.util.List;
 @RestController
-@RequestMapping("/curso")
+@RequestMapping("/cursos")
 public class contollerCurso {
     @Autowired
     private ServiceCurso serviceCurso;
@@ -34,14 +34,14 @@ public class contollerCurso {
             Curso curso = serviceCurso.obtenerCursoPorId(id);
             return ResponseEntity.ok(curso);
         } catch (ExceptionCursoNoEncontrado e) {
-            return ResponseEntity.badRequest().body("Curso no encontrado");
+            return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
 
     @PostMapping
     public ResponseEntity<Curso> agregarCurso(@RequestBody CursoDTO cursoDTO) {
         Curso cursoAgregado = serviceCurso.agregarCurso(cursoDTO);
-        return ResponseEntity.created(URI.create("/curso/" + cursoAgregado.getId())).body(cursoAgregado);
+        return ResponseEntity.created(URI.create("/cursos/" + cursoAgregado.getId())).body(cursoAgregado);
     }
 
     @PutMapping("/{id}")
