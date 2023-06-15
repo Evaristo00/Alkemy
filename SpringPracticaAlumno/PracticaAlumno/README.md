@@ -6,6 +6,7 @@ Esta API permite gestionar alumnos y cursos, así como realizar diversas operaci
 
 - [Modelo de datos](#modelo-de-datos)
 - [Endpoints](#endpoints)
+- [Base de datos](#Base-de-datos)
 
 ## Modelo de datos
 

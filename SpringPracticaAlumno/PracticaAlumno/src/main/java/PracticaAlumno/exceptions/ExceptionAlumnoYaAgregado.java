@@ -1,9 +1,11 @@
 package PracticaAlumno.exceptions;
 
-public class ExceptionAlumnoYaAgregado extends Exception {
+import PracticaAlumno.rest.ErrorCodes;
+import lombok.Getter;
 
+public class ExceptionAlumnoYaAgregado extends CustomException {
     public ExceptionAlumnoYaAgregado() {
-        super("El Alumno ya existe en este curso");
+        super("El Alumno ya existe en este curso",ErrorCodes.ALUMNO_YA_AGREGADO);
     }
 
 }

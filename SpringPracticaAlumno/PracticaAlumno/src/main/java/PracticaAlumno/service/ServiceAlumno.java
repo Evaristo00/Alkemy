@@ -21,14 +21,12 @@ public class ServiceAlumno {
         return alumnoRepository.findAll();
     }
 
-    public Alumno obtenerAlumnoPorDni(Integer dni)  throws ExceptionAlumnoNoEncontrado {
+    public Alumno obtenerAlumnoPorDni(Integer dni){
         return alumnoRepository.findByDni(dni)
                 .orElseThrow(() -> new ExceptionAlumnoNoEncontrado());
     }
 
-    public Alumno agregarAlumno(Alumno alumno) throws ExceptionAlumnoYaCreado {
-//        Boolean existeAlumno = alumnos.stream()
-//                .anyMatch(a -> a.getDni().equals(alumno.getDni()));
+    public Alumno agregarAlumno(Alumno alumno){
 
         Boolean existeAlumno = alumnoRepository.findByDni(alumno.getDni()).isPresent();
         if (existeAlumno) throw new ExceptionAlumnoYaCreado();
@@ -36,13 +34,13 @@ public class ServiceAlumno {
         return alumno;
     }
 
-    public Alumno actualizarAlumno(Alumno alumnoActualizado) throws ExceptionAlumnoNoEncontrado {
+    public Alumno actualizarAlumno(Alumno alumnoActualizado){
         Alumno alumnoExistente = obtenerAlumnoPorDni(alumnoActualizado.getDni());
         alumnoRepository.save(alumnoActualizado);
         return alumnoActualizado;
     }
 
-    public Alumno eliminarAlumnoPorDni(Integer dni) throws ExceptionAlumnoNoEncontrado {
+    public Alumno eliminarAlumnoPorDni(Integer dni){
         Alumno alumnoExistente = obtenerAlumnoPorDni(dni);
         alumnoRepository.delete(alumnoExistente);
         return alumnoExistente;

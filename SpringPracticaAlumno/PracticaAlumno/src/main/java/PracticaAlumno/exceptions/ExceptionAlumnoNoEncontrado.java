@@ -1,7 +1,10 @@
 package PracticaAlumno.exceptions;
 
-public class ExceptionAlumnoNoEncontrado extends Exception {
+import PracticaAlumno.rest.ErrorCodes;
+import lombok.Getter;
+
+public class ExceptionAlumnoNoEncontrado extends CustomException {
     public ExceptionAlumnoNoEncontrado() {
-        super("Alumno no encontrado");
+        super("Alumno no encontrado", ErrorCodes.ALUMNO_NO_ENCONTRADO);
     }
 }
