@@ -24,7 +24,6 @@ public class Curso {
     @Column(nullable = false)
     private String nombreCurso;
 
-
     @ManyToMany
     @JoinTable(
             name = "alumno_curso",
@@ -61,17 +60,7 @@ public class Curso {
                 .collect(Collectors.toList());
     }
 
-    public List<Alumno> calificacionMasAlta(){
-//        Optional<Integer> maxCalificacion = alumnos.values().stream().max(Integer::compareTo);
-//        return maxCalificacion.map(max -> alumnos.entrySet().stream()
-//                        .filter(entry -> entry.getValue().equals(max))
-//                        .map(Map.Entry::getKey)
-//                        .collect(Collectors.toList()))
-//                .orElse(Collections.emptyList());
-        return null;
-    }
-
-    public void agregarAlumno(Alumno alumno) throws ExceptionAlumnoYaAgregado {
+    public void agregarAlumno(Alumno alumno) {
         Boolean alumnoInscripto = listAlumnos.stream().anyMatch(a -> a.getDni().equals(alumno.getDni()));
         if (!alumnoInscripto){
             listAlumnos.add(alumno);
@@ -80,20 +69,11 @@ public class Curso {
         }
     }
 
-    public void eliminarAlumno(Integer dni) throws ExceptionAlumnoNoMatriculado {
+    public void eliminarAlumno(Integer dni) {
         boolean alumnoExistente = listAlumnos.removeIf(a -> a.getDni().equals(dni));
         if (!alumnoExistente) {
             throw new ExceptionAlumnoNoMatriculado();
         }
-    }
-
-
-
-    public void setCalificacion(Alumno alumno,int calificacion) throws ExceptionAlumnoNoMatriculado {
-//        if(alumnos.containsKey(alumno))
-//            alumnos.put(alumno,calificacion);
-//        else
-//            throw new ExceptionAlumnoNoMatriculado();
     }
 
 }

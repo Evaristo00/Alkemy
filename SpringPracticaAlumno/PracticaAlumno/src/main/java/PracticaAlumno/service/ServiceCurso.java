@@ -23,8 +23,6 @@ public class ServiceCurso {
     @Autowired
     private CursoRepository cursoRepository;
 
-//    @Autowired
-//    private AlumnoCursoRepository alumnoCursoRepository;
     @Autowired
     private ServiceAlumno serviceAlumno;
 
@@ -35,31 +33,31 @@ public class ServiceCurso {
         return listCursos;
     }
 
-    public Curso obtenerCursoPorId(Integer id) throws ExceptionCursoNoEncontrado {
+    public Curso obtenerCursoPorId(Integer id) {
         return cursoRepository.findById(id).orElseThrow(() -> new ExceptionCursoNoEncontrado());
     }
 
     public Curso agregarCurso(CursoDTO cursoDTO) {
 
-        Curso curso = new Curso(cursoDTO.getNombreCurso());
+        Curso curso = new Curso(cursoDTO.nombreCurso());
         cursoRepository.save(curso);
         return curso;
     }
 
-    public Curso modificarCurso(Integer id, CursoDTO cursoDTO) throws ExceptionCursoNoEncontrado {
+    public Curso modificarCurso(Integer id, CursoDTO cursoDTO) {
         Curso cursoExistente = obtenerCursoPorId(id);
-        cursoExistente.setNombreCurso(cursoDTO.getNombreCurso());
+        cursoExistente.setNombreCurso(cursoDTO.nombreCurso());
         cursoRepository.save(cursoExistente);
         return cursoExistente;
     }
 
-    public Curso eliminarCursoPorId(Integer id) throws ExceptionCursoNoEncontrado {
+    public Curso eliminarCursoPorId(Integer id) {
         Curso cursoExistente = obtenerCursoPorId(id);
         cursoRepository.delete(cursoExistente);
         return cursoExistente;
     }
 
-    public Alumno agregarAlumno(Integer idCurso, Integer dni) throws ExceptionCursoNoEncontrado, ExceptionAlumnoYaAgregado, ExceptionAlumnoNoEncontrado {
+    public Alumno agregarAlumno(Integer idCurso, Integer dni) {
         Curso cursoExistente = obtenerCursoPorId(idCurso);
         Alumno alumnoExistente = serviceAlumno.obtenerAlumnoPorDni(dni);
         cursoExistente.agregarAlumno(alumnoExistente);
@@ -68,32 +66,27 @@ public class ServiceCurso {
     }
 
     // Otros métodos para cada método definido en la clase Curso
-    public List<Alumno> listadoAlumnosDescreciente(Integer id) throws ExceptionCursoNoEncontrado {
+    public List<Alumno> listadoAlumnosDescreciente(Integer id) {
         Curso cursoExistente = obtenerCursoPorId(id);
         return cursoExistente.listadoAlumnosDescreciente();
     }
 
-    public Double alumnosPromedioEdad(Integer id) throws ExceptionCursoNoEncontrado {
+    public Double alumnosPromedioEdad(Integer id) {
         Curso cursoExistente = obtenerCursoPorId(id);
         return cursoExistente.alumnosPromedioEdad();
     }
 
-    public List<Alumno> alumnosAdeudanMaterias(Integer id) throws ExceptionCursoNoEncontrado{
+    public List<Alumno> alumnosAdeudanMaterias(Integer id) {
         Curso cursoExistente = obtenerCursoPorId(id);
         return cursoExistente.alumnosAdeudanMaterias();
     }
 
-    public List<Alumno> faltaAbonarMatricula(Integer id) throws  ExceptionCursoNoEncontrado{
+    public List<Alumno> faltaAbonarMatricula(Integer id) {
         Curso cursoExistente = obtenerCursoPorId(id);
         return cursoExistente.faltaAbonarMatricula();
     }
 
-    public List<Alumno> calificacionMasAlta(Integer id) throws  ExceptionCursoNoEncontrado{
-        Curso cursoExistente = obtenerCursoPorId(id);
-        return cursoExistente.calificacionMasAlta();
-    }
-
-    public void eliminarAlumno(Integer idCurso,Integer dni) throws ExceptionCursoNoEncontrado, ExceptionAlumnoNoMatriculado {
+    public void eliminarAlumno(Integer idCurso,Integer dni) {
         Curso cursoExistente = obtenerCursoPorId(idCurso);
         cursoExistente.eliminarAlumno(dni);
         cursoRepository.save(cursoExistente);

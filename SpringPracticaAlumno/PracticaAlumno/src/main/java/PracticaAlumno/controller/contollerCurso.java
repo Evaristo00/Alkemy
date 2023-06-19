@@ -10,6 +10,7 @@ import PracticaAlumno.exceptions.ExceptionAlumnoYaAgregado;
 import PracticaAlumno.exceptions.ExceptionCursoNoEncontrado;
 import PracticaAlumno.rest.Response;
 import PracticaAlumno.service.ServiceCurso;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -42,7 +43,7 @@ public class contollerCurso {
     }
 
     @PostMapping
-    public ResponseEntity<Response<Curso>> agregarCurso(@RequestBody CursoDTO cursoDTO) {
+    public ResponseEntity<Response<Curso>> agregarCurso(@Valid @RequestBody CursoDTO cursoDTO) {
         Response<Curso> response = new Response<>();
         Curso cursoAgregado = serviceCurso.agregarCurso(cursoDTO);
         response.setData(cursoAgregado);
@@ -50,7 +51,7 @@ public class contollerCurso {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Response<Curso>> modificarCurso(@PathVariable Integer id, @RequestBody CursoDTO cursoDTO) {
+    public ResponseEntity<Response<Curso>> modificarCurso(@PathVariable Integer id, @Valid@RequestBody CursoDTO cursoDTO) {
         Response<Curso> response = new Response<>();
         Curso curso = serviceCurso.modificarCurso(id, cursoDTO);
         response.setData(curso);
@@ -100,7 +101,7 @@ public class contollerCurso {
     @PostMapping("/{idCurso}/agregar-alumno")
     public ResponseEntity<Response<Alumno>> agregarAlumno(@PathVariable Integer idCurso, @RequestBody AlumnoDTO alumnoDTO) {
         Response<Alumno> response = new Response<>();
-        Alumno alumnoAgregado = serviceCurso.agregarAlumno(idCurso, alumnoDTO.getDni());
+        Alumno alumnoAgregado = serviceCurso.agregarAlumno(idCurso, alumnoDTO.dni());
         response.setData(alumnoAgregado);
         return ResponseEntity.created(null).body(response);
     }
