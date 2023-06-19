@@ -4,39 +4,45 @@ package PracticaAlumno.entity;
 
 import PracticaAlumno.exceptions.ExceptionAlumnoNoMatriculado;
 import PracticaAlumno.exceptions.ExceptionAlumnoYaAgregado;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import jakarta.persistence.*;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.springframework.boot.SpringApplication;
 
 import java.util.*;
 import java.util.stream.Collectors;
 
-
+@Getter@Setter
+@Entity
+@NoArgsConstructor
 public class Curso {
-    @Getter@Setter
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-    @Getter@Setter
+    @Column(nullable = false)
     private String nombreCurso;
 
-    private Map<Alumno,Integer> alumnos;
+    @ManyToMany
+    @JoinTable(
+            name = "alumno_curso",
+            joinColumns = @JoinColumn(name = "curso_id"),
+            inverseJoinColumns = @JoinColumn(name = "alumno_dni")
+    )
+    @JsonIgnore
+    private List<Alumno> listAlumnos;
 
-    public Curso(String nombreCurso, HashMap<Alumno,Integer> alumnos) {
+    public Curso(String nombreCurso) {
         this.nombreCurso = nombreCurso;
-        this.alumnos = alumnos;
-    }
-
-    public Curso(Integer id,String nombreCurso) {
-        this.id = id;
-        this.nombreCurso = nombreCurso;
-        this.alumnos = new HashMap<>();
     }
 
     public List<Alumno> listadoAlumnosDescreciente(){
-        return alumnos.keySet().stream().sorted(Comparator.comparing(Alumno::getApellido).reversed()).collect(Collectors.toList());
+        return listAlumnos.stream().sorted(Comparator.comparing(Alumno::getApellido).reversed()).collect(Collectors.toList());
     }
 
     public Double alumnosPromedioEdad(){
-        return alumnos.keySet()
+        return listAlumnos
                 .stream()
                 .mapToInt(Alumno::getEdad)
                 .average()
@@ -44,49 +50,30 @@ public class Curso {
     }
 
     public List<Alumno> alumnosAdeudanMaterias(){
-        return alumnos.keySet().stream().filter(Alumno::getAdeudaMaterias).collect(Collectors.toList());
+        return listAlumnos.stream().filter(Alumno::getAdeudaMaterias).collect(Collectors.toList());
     }
 
     public List<Alumno> faltaAbonarMatricula(){
-        return alumnos.entrySet()
+        return listAlumnos
                 .stream()
-                .filter(entry -> entry.getKey().getPagoMatricula())
-                .map(Map.Entry::getKey)
+                .filter(entry -> entry.getPagoMatricula())
                 .collect(Collectors.toList());
     }
 
-    public List<Alumno> calificacionMasAlta(){
-        Optional<Integer> maxCalificacion = alumnos.values().stream().max(Integer::compareTo);
-        return maxCalificacion.map(max -> alumnos.entrySet().stream()
-                        .filter(entry -> entry.getValue().equals(max))
-                        .map(Map.Entry::getKey)
-                        .collect(Collectors.toList()))
-                .orElse(Collections.emptyList());
-    }
-
-    public void agregarAlumno(Alumno alumno) throws ExceptionAlumnoYaAgregado {
-        Boolean alumnoInscripto = alumnos.keySet().stream().anyMatch(a -> a.getDni().equals(alumno.getDni()));
+    public void agregarAlumno(Alumno alumno) {
+        Boolean alumnoInscripto = listAlumnos.stream().anyMatch(a -> a.getDni().equals(alumno.getDni()));
         if (!alumnoInscripto){
-            alumnos.put(alumno,null);
+            listAlumnos.add(alumno);
         }else{
             throw new ExceptionAlumnoYaAgregado();
         }
     }
 
-    public void eliminarAlumno(Integer dni) throws ExceptionAlumnoNoMatriculado {
-        boolean alumnoExistente = alumnos.keySet().removeIf(a -> a.getDni().equals(dni));
+    public void eliminarAlumno(Integer dni) {
+        boolean alumnoExistente = listAlumnos.removeIf(a -> a.getDni().equals(dni));
         if (!alumnoExistente) {
             throw new ExceptionAlumnoNoMatriculado();
         }
-    }
-
-
-
-    public void setCalificacion(Alumno alumno,int calificacion) throws ExceptionAlumnoNoMatriculado {
-        if(alumnos.containsKey(alumno))
-            alumnos.put(alumno,calificacion);
-        else
-            throw new ExceptionAlumnoNoMatriculado();
     }
 
 }
