@@ -1,54 +1,133 @@
-# Proyecto de Gestión de Cursos y Alumnos
+# API de Alumnos y Cursos
 
-Este proyecto consiste en un sistema de gestión de cursos y alumnos desarrollado en Java. Permite realizar diversas operaciones como agregar alumnos, asignar calificaciones, obtener información sobre los alumnos y realizar modificaciones en los datos de los alumnos.
+Esta API permite gestionar alumnos y cursos, así como realizar diversas operaciones relacionadas con ellos.
 
-## Clase `Alumno`
+## Tabla de contenidos
 
-La clase `Alumno` representa a un estudiante y tiene los siguientes atributos:
+- [Modelo de datos](#modelo-de-datos)
+- [Endpoints](#endpoints)
+- [Base de datos](#Base-de-datos)
 
-- `nombre`: nombre del alumno.
-- `apellido`: apellido del alumno.
-- `edad`: edad del alumno.
-- `adeudaMaterias`: indica si el alumno adeuda materias de la secundaria.
-- `pagoMatricula`: indica si el alumno ha pagado la matrícula del curso.
+## Modelo de datos
 
-Además, la clase `Alumno` proporciona los siguientes métodos:
+El modelo de datos de la API incluye las siguientes entidades:
 
-- `toString()`: devuelve una representación en cadena del alumno.
-- Métodos getter y setter para acceder y modificar los atributos del alumno.
+### Alumno
 
-## Clase `Curso`
+Clase que representa a un alumno.
 
-La clase `Curso` representa un curso y contiene los siguientes atributos:
+Atributos:
+- `dni` (Integer): DNI del alumno.
+- `nombre` (String): Nombre del alumno.
+- `apellido` (String): Apellido del alumno.
+- `edad` (Integer): Edad del alumno.
+- `adeudaMaterias` (Boolean): Indica si el alumno adeuda materias.
+- `pagoMatricula` (Boolean): Indica si el alumno ha pagado la matrícula.
+- `cursos` (List<Curso>): Lista de cursos en los que está inscrito el alumno.
 
-- `nombreCurso`: nombre del curso.
-- `alumnos`: un mapa que mantiene una relación entre cada alumno y su calificación en el curso.
+### Curso
 
-La clase `Curso` proporciona los siguientes métodos:
+Clase que representa un curso.
 
-- `listadoAlumnosDescreciente()`: devuelve una lista de alumnos ordenados alfabéticamente de forma descendente.
-- `alumnosPromedioEdad()`: calcula y devuelve el promedio de edad de los alumnos del curso.
-- `alumnosAdeudanMaterias()`: devuelve una lista de alumnos que adeudan materias de la secundaria.
-- `faltaAbonarMatricula()`: verifica si algún alumno no ha abonado la matrícula del curso.
-- `calificacionMasAlta()`: encuentra y devuelve al alumno con la calificación más alta en el curso.
-- `agregarAlumno(alumno)`: agrega un nuevo alumno al curso, lanzando una excepción si el alumno ya está matriculado.
-- `eliminarAlumno(alumno)`: elimina a un alumno del curso, lanzando una excepción si el alumno no está matriculado.
-- `setCalificacion(alumno, calificacion)`: asigna una calificación a un alumno del curso, lanzando una excepción si el alumno no está matriculado.
+Atributos:
+- `id` (Integer): Identificador del curso.
+- `nombreCurso` (String): Nombre del curso.
+- `listAlumnos` (List<Alumno>): Lista de alumnos inscritos en el curso.
 
-## Clase `Main`
+## Endpoints
 
-La clase `Main` contiene el punto de entrada del programa y presenta un menú interactivo para realizar diversas operaciones en el sistema. Permite mostrar el listado de alumnos, obtener el promedio de edad, informar los alumnos que adeudan materias, encontrar al alumno con la nota más alta, verificar si algún alumno no ha abonado la matrícula, agregar un nuevo alumno, dar de baja a un alumno y modificar los datos de un alumno existente.
+A continuación se detallan los endpoints disponibles en la API.
 
-El programa utiliza listas de cursos y alumnos, y se interactúa con el usuario a través de la consola.
+### Alumno
 
-Para ejecutar el programa, simplemente compílalo y ejecuta el método `main` en la clase `Main`.
+- `GET /alumno`: Obtiene todos los alumnos registrados.
+- `GET /alumno/{dni}`: Obtiene un alumno por su DNI.
+- `POST /alumno`: Agrega un nuevo alumno.
+- `PUT /alumno`: Actualiza los datos de un alumno.
+- `DELETE /alumno/{dni}`: Elimina un alumno por su DNI.
 
-## Instrucciones
+### Curso
 
-1. Compila el proyecto.
-2. Ejecuta el programa.
-3. Se mostrará un menú con varias opciones. Ingresa el número correspondiente a la opción deseada y presiona Enter.
-4. Sigue las indicaciones en pantalla para realizar las operaciones seleccionadas.
-5. Para finalizar el programa, selecciona la opción "0. Salir".
+- `GET /curso`: Obtiene todos los cursos registrados.
+- `GET /curso/{id}`: Obtiene un curso por su ID.
+- `POST /curso`: Agrega un nuevo curso.
+- `PUT /curso/{id}`: Modifica los datos de un curso.
+- `DELETE /curso/{id}`: Elimina un curso por su ID.
+- `GET /curso/{id}/alumnos-descreciente`: Obtiene el listado de alumnos de un curso en orden descendente por apellido.
+- `GET /curso/{id}/promedio-edad`: Calcula el promedio de edad de los alumnos de un curso.
+- `GET /curso/{id}/alumnos-adeudan-materias`: Obtiene la lista de alumnos de un curso que adeudan materias.
+- `GET /curso/{id}/falta-abonar-matricula`: Obtiene la lista de alumnos de un curso que no han abonado la matrícula.
+- `POST /curso/{idCurso}/agregar-alumno`: Agrega un alumno a un curso.
+- `DELETE /curso/{idCurso}/{dni}`: Elimina un alumno de un curso por su DNI.
 
-¡Disfruta usando el sistema de gestión de cursos y alumnos!
+**Nota:** Los parámetros entre llaves `{}` indican que se deben reemplazar con un valor válido al hacer la petición.
+
+### Swagger
+
+- `GET /docs/swagger-ui.html`: Accede a Swagger UI para explorar la documentación interactiva de la API.
+
+**Nota:** Los parámetros entre llaves `{}` indican que se deben reemplazar con un valor válido al hacer la petición.
+
+
+## Base de datos
+
+La API utiliza una base de datos MySQL para almacenar los datos de alumnos y cursos. La conexión a la base de datos se realiza utilizando Hibernate y JPA.
+
+Para utilizar el contenedor Docker en la base de datos de la API, se proporciona un archivo `docker-compose.yml` en la carpeta `Docker`. Este archivo define los servicios necesarios para ejecutar la base de datos MySQL dentro de un contenedor.
+
+El uso de Docker permite crear un entorno aislado y portátil que contiene todos los componentes necesarios para ejecutar la base de datos sin afectar el entorno local de tu máquina.
+
+A continuación, se explica cómo utilizar el contenedor Docker para ejecutar la base de datos:
+
+1. Abre una terminal o línea de comandos.
+2. Navega hasta la carpeta `Docker` del proyecto de la API. Puedes usar el comando `cd` seguido de la ruta de la carpeta.
+3. Una vez dentro de la carpeta `Docker`, ejecuta el siguiente comando:
+
+   ```
+   docker-compose up
+   ```
+
+   Este comando leerá el archivo `docker-compose.yml` y construirá el contenedor de la base de datos MySQL junto con cualquier configuración adicional especificada en el archivo.
+
+4. Docker descargará la imagen de MySQL si no está presente en tu máquina y luego iniciará el contenedor de la base de datos.
+5. Una vez que el contenedor esté en funcionamiento, podrás conectarte a la base de datos MySQL utilizando la configuración proporcionada en la API.
+
+Ten en cuenta que es posible que necesites tener Docker instalado en tu máquina antes de poder ejecutar el comando `docker-compose`. Además, asegúrate de tener los permisos necesarios para ejecutar Docker.
+
+Al seguir estos pasos, el contenedor Docker con la base de datos estará en funcionamiento y podrás utilizarlo con la API de Alumnos y Cursos.
+
+Si deseas utilizar XAMPP en lugar de Docker para la base de datos, debes realizar los siguientes pasos:
+
+1. Abre el archivo `application.properties` ubicado en la raíz del proyecto de la API.
+2. Comenta las configuraciones relacionadas con Docker, para ello, añade un símbolo de numeral (#) al inicio de cada línea correspondiente a Docker. Deberás comentar las siguientes líneas:
+
+   ```
+   # Descomentar para utilizar docker
+   # spring.jpa.hibernate.ddl-auto=update
+   # spring.datasource.url=jdbc:mysql://localhost:3306/ALKEMYDB
+   # spring.datasource.username=root
+   # spring.datasource.password=password
+
+   # jpa.hibernate.ddl-auto= update
+   # properties.hibernate.dialect= org.hibernate.dialect.MySQLDialect
+   # spring.datasource.driver-class-name=com.mysql.cj.jdbc.Driver
+   ```
+
+3. Descomenta las configuraciones relacionadas con XAMPP, eliminando el símbolo de numeral (#) al inicio de cada línea correspondiente a XAMPP. Deberás descomentar las siguientes líneas:
+
+   ```
+   # Configuaracion para utilizar XAMPP
+   spring.datasource.url=jdbc:mysql://localhost:3306/alkemydb
+   spring.datasource.username=root
+   spring.datasource.password=
+   spring.datasource.driver-class-name=com.mysql.jdbc.Driver
+
+   # Configuración de Hibernate
+   spring.jpa.database-platform=org.hibernate.dialect.MySQL5Dialect
+   spring.jpa.show-sql=true
+   spring.jpa.hibernate.ddl-auto=update
+   ```
+
+Al realizar estos cambios en el archivo `application.properties`, estarás configurando la API para utilizar XAMPP en lugar del contenedor Docker. Asegúrate de tener XAMPP instalado y en funcionamiento en tu máquina antes de ejecutar la API.
+
+Recuerda que si optas por utilizar XAMPP, deberás tener la base de datos MySQL configurada y en ejecución a través de XAMPP para que la API pueda establecer conexión correctamente.
