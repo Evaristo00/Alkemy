@@ -37,7 +37,7 @@ public class AuthenticationService {
                 .build();
         alumnoRepository.save(alumno);
 
-        String jwt = jwtService.generateToken(alumno);
+        String jwt = jwtService.generateToken(alumno,alumno.getDni());
 
         return  JwtAuthenticationResponse.builder().token(jwt).build();
     }
@@ -48,7 +48,7 @@ public class AuthenticationService {
         Alumno alumno = alumnoRepository.findByMail(request.mail())
                 .orElseThrow( () -> new IllegalArgumentException("Invalid mail or password"));
 
-        String jwt = jwtService.generateToken(alumno);
+        String jwt = jwtService.generateToken(alumno,alumno.getDni());
         return JwtAuthenticationResponse.builder().token(jwt).build();
     }
 

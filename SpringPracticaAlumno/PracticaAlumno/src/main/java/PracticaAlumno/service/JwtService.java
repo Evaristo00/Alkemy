@@ -20,8 +20,10 @@ public class JwtService {
     @Value("${token.signing.key}")
     private String jwtKey;
 
-    public String generateToken(UserDetails userDetails) {
-        return Jwts.builder().setClaims(new HashMap<>()).setSubject(userDetails.getUsername())
+    public String generateToken(UserDetails userDetails, Integer id) {
+
+        return Jwts.builder().setClaims(new HashMap<String, Integer>() {{put("Dni", id);}})
+                .setSubject(userDetails.getUsername())
                 .setIssuedAt(new Date(System.currentTimeMillis()))
                 .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 24))
                 .signWith(getSigningKey(), SignatureAlgorithm.HS256).compact();
@@ -36,6 +38,10 @@ public class JwtService {
         final Claims claims = Jwts.parserBuilder().setSigningKey(getSigningKey()).build().parseClaimsJws(token)
                 .getBody();
         return claimsResolvers.apply(claims);
+    }
+
+    public Integer extractDni(String token) {
+        return extractClaim(token, claims -> claims.get("Dni", Integer.class));
     }
 
     public String extractUserName(String token) {

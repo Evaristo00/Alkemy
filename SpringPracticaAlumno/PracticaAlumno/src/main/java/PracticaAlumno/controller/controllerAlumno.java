@@ -6,6 +6,7 @@ import PracticaAlumno.service.ServiceAlumno;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
@@ -27,6 +28,7 @@ public class controllerAlumno {
         return ResponseEntity.ok(response);
     }
 
+    @PreAuthorize("#dni == authentication.principal.dni")
     @GetMapping("/{dni}")
     public ResponseEntity<Response<Alumno>> obtenerAlumnoPorDni(@PathVariable Integer dni) {
             Alumno alumno = serviceAlumno.obtenerAlumnoPorDni(dni);
